@@ -12,14 +12,12 @@
         if (this.readyState == 4 && this.status == 200) {
           var object = JSON.parse(this.response);
 
-          
-            let fullname = object.firstname +" "+ object.lastname;
+          let fullname = object.firstname + " " + object.lastname;
 
-            $("#user").prepend(`<h4 class="mt-1 mb-1">Hi, ${fullname}</h4>`);
-          }
-          
+          $("#user").prepend(`<h4 class="mt-1 mb-1">Hi, ${fullname}</h4>`);
         }
-      
+
+      }
 
       request.open("GET", "https://fe18.azurewebsites.net/api/user", true);
       request.send();
@@ -114,7 +112,7 @@
 
           for (var i = 0; i < object.updates.length; i++) {
             $("#updates-section").append(
-              `<li>
+            `<li>
             <h6>${object.updates[i].title}</h6>
             <p class="mt-2">${object.updates[i].description}</p>
             <p class="text-muted mb-4">
@@ -138,15 +136,16 @@
           var object = JSON.parse(this.response);
 
           for (var i = 0; i < object.years.length; i++) {
-            $("#tickets-year-filter").append(
-              `
-           <a class="dropdown-item" href="#">${object.years[i]}</a>
-           `);
+            $("#tickets-year-filter").append(`<option value="${object.years[i]}">${object.years[i]}</option>`);
           }
 
+          $('#tickets-year-filter').change(function () {
+            var year = $(this).val();
+            $("#tickets-section tr").hide();
+            $("#tickets-section tr:contains('" + year + "')").show();
+          });
 
-
-
+          
           for (var i = 0; i < object.tickets.length; i++) {
             let names = object.tickets[i].fullname.split(" ")
             let initials = names[0].charAt(0) + names[1].charAt(0);
@@ -177,6 +176,7 @@
          </tr>
            `);
           }
+
         }
       }
 
